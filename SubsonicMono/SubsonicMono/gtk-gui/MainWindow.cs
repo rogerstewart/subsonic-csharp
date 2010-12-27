@@ -27,6 +27,8 @@ public partial class MainWindow
 
 	private global::Gtk.Button btnQueueSong;
 
+	private global::Gtk.Button btnPlay;
+
 	protected virtual void Build ()
 	{
 		global::Stetic.Gui.Initialize (this);
@@ -143,6 +145,16 @@ public partial class MainWindow
 		global::Gtk.Fixed.FixedChild w11 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.btnQueueSong]));
 		w11.X = 280;
 		w11.Y = 425;
+		// Container child frMain.Gtk.Fixed+FixedChild
+		this.btnPlay = new global::Gtk.Button ();
+		this.btnPlay.CanFocus = true;
+		this.btnPlay.Name = "btnPlay";
+		this.btnPlay.UseUnderline = true;
+		this.btnPlay.Label = global::Mono.Unix.Catalog.GetString ("Play");
+		this.frMain.Add (this.btnPlay);
+		global::Gtk.Fixed.FixedChild w12 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.btnPlay]));
+		w12.X = 323;
+		w12.Y = 247;
 		this.Add (this.frMain);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();

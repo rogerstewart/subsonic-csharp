@@ -21,6 +21,7 @@ using Gtk;
 using SubsonicAPI;
 using System.Collections.Generic;
 using HollyLibrary;
+using System.Threading;
 
 public partial class MainWindow : Gtk.Window
 {
@@ -59,7 +60,7 @@ public partial class MainWindow : Gtk.Window
 		
 		// Check to see if it has any children
 		if (thisNode.Nodes.Count == 1 && thisNode.Nodes[0].Text == "")
-		{
+		{			
 			// Node child is a dummy
 			thisNode.Nodes[0].Text = "Loading...";
 			
