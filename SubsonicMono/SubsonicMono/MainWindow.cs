@@ -24,7 +24,8 @@ using HollyLibrary;
 
 public partial class MainWindow : Gtk.Window
 {
-	HTreeView theTreeView;
+	HTreeView tvLibrary;
+	HSimpleList slPlaylist;
 	
 	public MainWindow () : base(Gtk.WindowType.Toplevel)
 	{
@@ -32,18 +33,26 @@ public partial class MainWindow : Gtk.Window
 		Subsonic.appName = "IansCsharpApp";
 		
 		InitializeTreeView();
+		InitializePlaylist();
 	}
 	
 	private void InitializeTreeView()
 	{
-		theTreeView = new HTreeView();
-		swLibrary.Add(theTreeView);
-		theTreeView.NodeExpanded += HandleTheTreeViewNodeExpanded;
-		theTreeView.Editable = false;
-		theTreeView.Visible = true;
+		tvLibrary = new HTreeView();
+		swLibrary.Add(tvLibrary);
+		tvLibrary.NodeExpanded += tvLibraryNodeExpanded;
+		tvLibrary.Editable = false;
+		tvLibrary.Visible = true;
+	}
+	
+	private void InitializePlaylist()
+	{
+		slPlaylist = new HSimpleList();
+		swPlayQueue.Add(slPlaylist);
+		slPlaylist.Visible = true;
 	}
 
-	void HandleTheTreeViewNodeExpanded (object sender, NodeEventArgs args)
+	void tvLibraryNodeExpanded (object sender, NodeEventArgs args)
 	{
 		// Fetch any items inside the node...
 		HTreeNode thisNode = args.Node;
@@ -80,59 +89,40 @@ public partial class MainWindow : Gtk.Window
 		}		
 	}
 
-	void HandleTheTreeViewBeforeNodeExpand (object sender, NodeEventArgs args)
-	{
-		// Fetch any items inside the node...
-		HTreeNode thisNode = args.Node;
-		
-		// Check to see if it has any children
-		if (thisNode.Nodes.Count == 1 && thisNode.Nodes[0].Text == "")
-		{
-			// Node child is a dummy
-			//thisNode.Icon = new Gdk.Pixbuf("ItemLoad.gif");
-			
-			// Get path to the selected node to expandsimp
-			Queue<string> nodePath = GetNodePath(thisNode);
-			
-			// Dive into library to selected node
-			SubsonicItem thisItem = Subsonic.MyLibrary;
-			while (nodePath.Count > 0)
-			{
-				thisItem = thisItem.GetChildByName(nodePath.Dequeue());
-			}
-			
-			// Should now have the correct selected item
-			foreach(SubsonicItem child in thisItem.children)
-			{
-				HTreeNode childNode = new HTreeNode(child.name);
-				thisNode.Nodes.Add(childNode);
-				
-				// Adding a dummy node for any Folders
-				if (child.itemType == SubsonicItem.SubsonicItemType.Folder)
-					childNode.Nodes.Add(new HTreeNode(""));
-			}			
-			
-			// Remove dummy node
-			thisNode.Nodes.RemoveAt(0);
-			//thisNode.Icon = null;
-		}
-	}
-	
 	private Queue<string> GetNodePath(HTreeNode theNode)
 	{
+		// Create a queue that will hold the name of all parent objects
 		Queue<string> nodePath;
 		if (theNode.ParentNode != null)
 		{
+			// If this node has a parent, then recurse
 			nodePath = GetNodePath(theNode.ParentNode);
 		}
 		else
 		{
+			// If the praent, then initialize the path
 			nodePath = new Queue<string>();
 		}
 		
+		// Add enqueue this item in the path
 		nodePath.Enqueue(theNode.Text);
 		
 		return nodePath;
+	}
+	
+	private SubsonicItem GetNodeItem(HTreeNode theNode)
+	{
+		// Get path to the selected node
+		Queue<string> nodePath = GetNodePath(theNode);
+		
+		// Dive into library to selected node
+		SubsonicItem thisItem = Subsonic.MyLibrary;
+		while (nodePath.Count > 0)
+		{
+			thisItem = thisItem.GetChildByName(nodePath.Dequeue());
+		}
+		
+		return thisItem;
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -141,23 +131,11 @@ public partial class MainWindow : Gtk.Window
 		a.RetVal = true;
 	}
 	
-	protected virtual void OnBtnLoginClicked (object sender, System.EventArgs e)
-	{
-		
-	}
-	
-	protected virtual void OnBtnGetAlbumsClicked (object sender, System.EventArgs e)
-	{
-		
-	}
-	
 	protected virtual void OnBtnLogin2Clicked (object sender, System.EventArgs e)
 	{
 		string server = tbServer.Text;
 		string user = tbUsername.Text;
 		string passw0rdd = tbPaassw0rd.Text;
-		
-		
 		
 		string loginResult = Subsonic.LogIn(server, user, passw0rdd);
 		Console.WriteLine("Login Result: " + loginResult);
@@ -166,12 +144,36 @@ public partial class MainWindow : Gtk.Window
 		foreach(SubsonicItem artist in thisLibrary.children)
 		{
 			HTreeNode artistNode = new HTreeNode(artist.name);
-			theTreeView.Nodes.Add(artistNode);
+			tvLibrary.Nodes.Add(artistNode);
 			
 			// Adding a dummy node for the artist
 			artistNode.Nodes.Add(new HTreeNode(""));
 		}
 	}
+	
+	protected virtual void OnBtnQueueSongClicked (object sender, System.EventArgs e)
+	{
+		HTreeNode theNode = tvLibrary.SelectedNode;
+		
+		// Check if node has children
+		if (theNode.Nodes.Count > 0)
+		{
+			// Will add all children to queue
+		}
+		else
+		{
+			// Node is a leaf (song)
+			SubsonicItem theItem = GetNodeItem(theNode);
+			
+			// Confirm that the item is  asong
+			if (theItem.itemType == SubsonicItem.SubsonicItemType.Song)
+			{
+				slPlaylist.Items.Add(theItem);
+			}
+			
+		}
+	}
+	
 	
 	
 	

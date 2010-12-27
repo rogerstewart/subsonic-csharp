@@ -19,21 +19,13 @@ public partial class MainWindow
 
 	private global::Gtk.Entry tbPaassw0rd;
 
-	private global::Gtk.Button btnLogin;
-
-	private global::Gtk.ScrolledWindow GtkScrolledWindow;
-
-	private global::Gtk.TreeView tvArtists;
-
-	private global::Gtk.ScrolledWindow GtkScrolledWindow1;
-
-	private global::Gtk.TreeView treeview2;
-
-	private global::Gtk.Button btnGetAlbums;
+	private global::Gtk.ScrolledWindow swLibrary;
 
 	private global::Gtk.Button btnLogin2;
 
-	private global::Gtk.ScrolledWindow scrolledwindow1;
+	private global::Gtk.ScrolledWindow swPlayQueue;
+
+	private global::Gtk.Button btnQueueSong;
 
 	protected virtual void Build ()
 	{
@@ -110,56 +102,16 @@ public partial class MainWindow
 		w7.X = 13;
 		w7.Y = 199;
 		// Container child frMain.Gtk.Fixed+FixedChild
-		this.btnLogin = new global::Gtk.Button ();
-		this.btnLogin.CanFocus = true;
-		this.btnLogin.Name = "btnLogin";
-		this.btnLogin.UseUnderline = true;
-		this.btnLogin.Label = global::Mono.Unix.Catalog.GetString ("Log In");
-		this.frMain.Add (this.btnLogin);
-		global::Gtk.Fixed.FixedChild w8 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.btnLogin]));
-		w8.X = 16;
-		w8.Y = 245;
-		// Container child frMain.Gtk.Fixed+FixedChild
-		this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
-		this.GtkScrolledWindow.WidthRequest = 245;
-		this.GtkScrolledWindow.HeightRequest = 332;
-		this.GtkScrolledWindow.Name = "GtkScrolledWindow";
-		this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
-		// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-		this.tvArtists = new global::Gtk.TreeView ();
-		this.tvArtists.CanFocus = true;
-		this.tvArtists.Name = "tvArtists";
-		this.tvArtists.SearchColumn = 0;
-		this.GtkScrolledWindow.Add (this.tvArtists);
-		this.frMain.Add (this.GtkScrolledWindow);
-		global::Gtk.Fixed.FixedChild w10 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.GtkScrolledWindow]));
-		w10.X = 19;
-		w10.Y = 298;
-		// Container child frMain.Gtk.Fixed+FixedChild
-		this.GtkScrolledWindow1 = new global::Gtk.ScrolledWindow ();
-		this.GtkScrolledWindow1.WidthRequest = 378;
-		this.GtkScrolledWindow1.HeightRequest = 327;
-		this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
-		this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
-		// Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
-		this.treeview2 = new global::Gtk.TreeView ();
-		this.treeview2.CanFocus = true;
-		this.treeview2.Name = "treeview2";
-		this.GtkScrolledWindow1.Add (this.treeview2);
-		this.frMain.Add (this.GtkScrolledWindow1);
-		global::Gtk.Fixed.FixedChild w12 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.GtkScrolledWindow1]));
-		w12.X = 314;
-		w12.Y = 302;
-		// Container child frMain.Gtk.Fixed+FixedChild
-		this.btnGetAlbums = new global::Gtk.Button ();
-		this.btnGetAlbums.CanFocus = true;
-		this.btnGetAlbums.Name = "btnGetAlbums";
-		this.btnGetAlbums.UseUnderline = true;
-		this.btnGetAlbums.Label = global::Mono.Unix.Catalog.GetString (">");
-		this.frMain.Add (this.btnGetAlbums);
-		global::Gtk.Fixed.FixedChild w13 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.btnGetAlbums]));
-		w13.X = 277;
-		w13.Y = 457;
+		this.swLibrary = new global::Gtk.ScrolledWindow ();
+		this.swLibrary.WidthRequest = 262;
+		this.swLibrary.HeightRequest = 348;
+		this.swLibrary.CanFocus = true;
+		this.swLibrary.Name = "swLibrary";
+		this.swLibrary.ShadowType = ((global::Gtk.ShadowType)(1));
+		this.frMain.Add (this.swLibrary);
+		global::Gtk.Fixed.FixedChild w8 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.swLibrary]));
+		w8.X = 10;
+		w8.Y = 295;
 		// Container child frMain.Gtk.Fixed+FixedChild
 		this.btnLogin2 = new global::Gtk.Button ();
 		this.btnLogin2.CanFocus = true;
@@ -167,20 +119,30 @@ public partial class MainWindow
 		this.btnLogin2.UseUnderline = true;
 		this.btnLogin2.Label = global::Mono.Unix.Catalog.GetString ("Login2");
 		this.frMain.Add (this.btnLogin2);
-		global::Gtk.Fixed.FixedChild w14 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.btnLogin2]));
-		w14.X = 93;
-		w14.Y = 240;
+		global::Gtk.Fixed.FixedChild w9 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.btnLogin2]));
+		w9.X = 14;
+		w9.Y = 241;
 		// Container child frMain.Gtk.Fixed+FixedChild
-		this.scrolledwindow1 = new global::Gtk.ScrolledWindow ();
-		this.scrolledwindow1.WidthRequest = 272;
-		this.scrolledwindow1.HeightRequest = 225;
-		this.scrolledwindow1.CanFocus = true;
-		this.scrolledwindow1.Name = "scrolledwindow1";
-		this.scrolledwindow1.ShadowType = ((global::Gtk.ShadowType)(1));
-		this.frMain.Add (this.scrolledwindow1);
-		global::Gtk.Fixed.FixedChild w15 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.scrolledwindow1]));
-		w15.X = 217;
-		w15.Y = 37;
+		this.swPlayQueue = new global::Gtk.ScrolledWindow ();
+		this.swPlayQueue.WidthRequest = 208;
+		this.swPlayQueue.HeightRequest = 338;
+		this.swPlayQueue.CanFocus = true;
+		this.swPlayQueue.Name = "swPlayQueue";
+		this.swPlayQueue.ShadowType = ((global::Gtk.ShadowType)(1));
+		this.frMain.Add (this.swPlayQueue);
+		global::Gtk.Fixed.FixedChild w10 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.swPlayQueue]));
+		w10.X = 315;
+		w10.Y = 296;
+		// Container child frMain.Gtk.Fixed+FixedChild
+		this.btnQueueSong = new global::Gtk.Button ();
+		this.btnQueueSong.CanFocus = true;
+		this.btnQueueSong.Name = "btnQueueSong";
+		this.btnQueueSong.UseUnderline = true;
+		this.btnQueueSong.Label = global::Mono.Unix.Catalog.GetString (">");
+		this.frMain.Add (this.btnQueueSong);
+		global::Gtk.Fixed.FixedChild w11 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.btnQueueSong]));
+		w11.X = 280;
+		w11.Y = 425;
 		this.Add (this.frMain);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -189,8 +151,7 @@ public partial class MainWindow
 		this.DefaultHeight = 684;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
-		this.btnLogin.Clicked += new global::System.EventHandler (this.OnBtnLoginClicked);
-		this.btnGetAlbums.Clicked += new global::System.EventHandler (this.OnBtnGetAlbumsClicked);
 		this.btnLogin2.Clicked += new global::System.EventHandler (this.OnBtnLogin2Clicked);
+		this.btnQueueSong.Clicked += new global::System.EventHandler (this.OnBtnQueueSongClicked);
 	}
 }
