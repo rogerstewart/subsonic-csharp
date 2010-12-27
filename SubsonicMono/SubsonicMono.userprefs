@@ -1,0 +1,18 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SubsonicAPI/SubsonicAPI.cs" ctype="Workbench">
+    <Files>
+      <File FileName="SubsonicAPI/SubsonicAPI.cs" Line="247" Column="3" />
+      <File FileName="SubsonicMono/MainWindow.cs" Line="121" Column="2" />
+      <File FileName="SubsonicMono/Main.cs" Line="13" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/home/ianfijolek/workspace/subsonic-csharp/SubsonicMono/SubsonicMono/MainWindow.cs" line="34" />
+      <Breakpoint file="/home/ianfijolek/workspace/subsonic-csharp/SubsonicMono/SubsonicMono/MainWindow.cs" line="89" />
+      <Breakpoint file="/home/ianfijolek/workspace/subsonic-csharp/SubsonicMono/SubsonicMono/MainWindow.cs" line="124" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />
+</Properties>
