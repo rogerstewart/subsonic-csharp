@@ -5,3 +5,5 @@ Homepage:		http://code.google.com/p/subsonic-csharp/
 
 Please refer to the home page for license information as well
 as source code, documentation and compiling instructions
+
+Uses HollyLibrary.dll (LGPL) located at http://code.google.com/p/holly-gtk-widgets/
