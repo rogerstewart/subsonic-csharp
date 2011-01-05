@@ -169,7 +169,17 @@ public partial class MainWindow : Gtk.Window
 			// Confirm that the item is  asong
 			if (theItem.itemType == SubsonicItem.SubsonicItemType.Song)
 			{
-				slPlaylist.Items.Add(theItem);
+				//slPlaylist.Items.Add(theItem);
+				
+				Dictionary<string, string> songId = new Dictionary<string, string>();
+				songId.Add("id", theItem.id);
+				string streamURL = Subsonic.BuildRequestURL("download.view", songId);
+				streamURL += "&u=" + Subsonic.username + "&p=enc:" + Subsonic.encPass;
+				
+				System.Diagnostics.Process proc = new System.Diagnostics.Process();
+				proc.StartInfo.FileName = "vlc";
+				proc.StartInfo.Arguments = "--one-instance --playlist-enqueue " + streamURL;
+				proc.Start();				
 			}
 			
 		}

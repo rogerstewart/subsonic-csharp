@@ -170,6 +170,8 @@ namespace SubsonicAPI
         // Set with the login method
         static string server;
         static string authHeader;
+		public static string encPass;
+		public static string username;
 
         /// <summary>
         /// Takes parameters for server, username and password to generate an auth header
@@ -186,7 +188,13 @@ namespace SubsonicAPI
             server = theServer;
             authHeader = user + ":" + password;
             authHeader = Convert.ToBase64String(Encoding.Default.GetBytes(authHeader));
-
+			// Store user and encoded password for alternate authentication
+			username = user;
+			
+			Byte[] passwordBytes = Encoding.Default.GetBytes(password);
+			for (int i = 0; i < passwordBytes.Length; i++)
+				encPass += passwordBytes[i].ToString("x2");
+			
             Stream theStream = MakeGenericRequest("ping", null);
 
             StreamReader sr = new StreamReader(theStream);
