@@ -1,4 +1,4 @@
-﻿/**************************************************************************
+/**************************************************************************
     Subsonic Csharp
     Copyright (C) 2010  Ian Fijolek
  
@@ -137,7 +137,58 @@ namespace SubsonicAPI
 		}
     }
 	
-	
+	public class Song : SubsonicItem
+	{
+		public string artist;
+		public string album;
+		public string title;
+		
+		public Song()
+		{
+			this.artist = "";
+			this.title = "";
+			this.album = "";
+			this.name = "";
+			this.id = "";
+			this.itemType = SubsonicItem.SubsonicItemType.Song;
+			this.parent = null;
+			this.lastAccessed = DateTime.Now.ToString();
+		}
+		
+		public Song(string title,string artist, string album, string id)
+		{
+			this.artist = artist;
+			this.title = title;
+			this.album = album;
+			this.name = title;
+			this.id = id;
+			this.itemType = SubsonicItem.SubsonicItemType.Song;
+			this.parent = null;
+			this.lastAccessed = DateTime.Now.ToString();
+		}
+		
+		public Song(string title, string artist, string album, string id, SubsonicItem parent)
+		{
+			this.artist = artist;
+			this.title = title;
+			this.album = album;
+			this.name = title;
+			this.id = id;
+			this.itemType = SubsonicItem.SubsonicItemType.Song;
+			this.parent = parent;
+			this.lastAccessed = DateTime.Now.ToString();
+		}
+		
+		public Stream getStream()
+		{
+			return Subsonic.StreamSong(this.id);
+		}
+		
+		public override string ToString()
+		{
+			return artist + " - " + title;
+		}
+	}
 
     #endregion Classes
 
@@ -149,6 +200,9 @@ namespace SubsonicAPI
     {
 		private static SubsonicItem _MyLibrary;
 		
+		/// <summary>
+		/// Public Property that can be used for auto-retrieving children
+		/// </summary>
 		public static SubsonicItem MyLibrary
 		{
 			get
@@ -164,14 +218,16 @@ namespace SubsonicAPI
         // Should be set from application layer when the application is loaded
         public static string appName;
 
-        // Version of the REST API implemented
+        // Min version of the REST API implemented
         private static string apiVersion = "1.3.0";
 
         // Set with the login method
         static string server;
         static string authHeader;
-		public static string encPass;
-		public static string username;
+		
+		// Used for generating direct URLS
+		static string encPass;
+		static string username;
 
         /// <summary>
         /// Takes parameters for server, username and password to generate an auth header
@@ -188,9 +244,9 @@ namespace SubsonicAPI
             server = theServer;
             authHeader = user + ":" + password;
             authHeader = Convert.ToBase64String(Encoding.Default.GetBytes(authHeader));
-			// Store user and encoded password for alternate authentication
-			username = user;
 			
+			// Store user and encoded password for alternate authentication
+			username = user;			
 			Byte[] passwordBytes = Encoding.Default.GetBytes(password);
 			for (int i = 0; i < passwordBytes.Length; i++)
 				encPass += passwordBytes[i].ToString("x2");
@@ -263,6 +319,26 @@ namespace SubsonicAPI
             return requestURL;
         }
 
+		/// <summary>
+		/// Creates a URL for a command with username and encoded pass in the URL
+		/// </summary>
+		/// <param name="method"></param>
+		/// <param name="parameters"></param>
+		/// <returns>URL for streaming a song or retrieving the results of a call</returns>
+		public static string BuildDirectURL(string method, Dictionary<string, string> parameters)
+		{
+			string callURL = "http://" + server + "/rest/" + method + "?v=" + apiVersion + "&c=" + appName
+				+ "&u=" + username + "&p=enc:" + encPass;
+            if (parameters != null)
+            {
+                foreach (KeyValuePair<string, string> parameter in parameters)
+                {
+                    callURL += "&" + parameter.Key + "=" + parameter.Value;
+                }
+            }
+            return callURL;
+		}
+		
 		/// <summary>
 		/// Returns a list of SubsonicItems that fall inside the parent object 
 		/// </summary>
@@ -499,6 +575,74 @@ namespace SubsonicAPI
 			
 			return nowPlaying;
 		}
+		
+		/// <summary>
+		/// Performs a search valid for the current version of the subsonic server 
+		/// </summary>
+		/// <param name="query">The Term you want to search for</param>
+		/// <returns>A List of SubsonicItem objects</returns>
+		public static List<SubsonicItem> Search(string query)
+		{
+			Dictionary<string, string> parameters = new Dictionary<string, string>();            
+			Version apiV = new Version(apiVersion);
+			Version Search2Min = new Version("1.4.0");
+			string request = "";
+			if (apiV >= Search2Min)
+			{
+				request = "search2";
+				parameters.Add("query", query);
+			}
+			else
+			{
+				request = "search";
+				parameters.Add("any", query);
+			}
+
+            // Make the request
+            Stream theStream = MakeGenericRequest(request, parameters);
+            // Read the response as a string
+            StreamReader sr = new StreamReader(theStream);
+            string result = sr.ReadToEnd();
+
+            // Parse the resulting XML string into an XmlDocument
+            XmlDocument myXML = new XmlDocument();
+            myXML.LoadXml(result);
+			
+			List<SubsonicItem> searchResults = new List<SubsonicItem>();
+			
+			// Parse the artist
+			if (myXML.ChildNodes[1].Name == "subsonic-response")
+            {
+                if (myXML.ChildNodes[1].FirstChild.Name == "searchResult")
+                {
+                    for (int i = 0; i < myXML.ChildNodes[1].FirstChild.ChildNodes.Count; i++)
+                    {
+                        bool isDir = bool.Parse(myXML.ChildNodes[1].FirstChild.ChildNodes[i].Attributes["isDir"].Value);
+                        string title = myXML.ChildNodes[1].FirstChild.ChildNodes[i].Attributes["title"].Value;
+                        string theId = myXML.ChildNodes[1].FirstChild.ChildNodes[i].Attributes["id"].Value;
+						string artist = "";
+						string album = "";
+						
+						if (!isDir)
+						{								
+	                        artist = myXML.ChildNodes[1].FirstChild.ChildNodes[i].Attributes["artist"].Value;
+	                        album = myXML.ChildNodes[1].FirstChild.ChildNodes[i].Attributes["album"].Value;
+						}
+						
+						SubsonicItem theItem;
+						if (isDir)
+                       		theItem = new SubsonicItem(title, theId, SubsonicItem.SubsonicItemType.Folder, null);
+						else
+							theItem = new Song(title, artist, album, theId);
+
+                        searchResults.Add(theItem);
+                    }
+                }
+            }
+			
+			return searchResults;
+		}
+		
     }
 
 }

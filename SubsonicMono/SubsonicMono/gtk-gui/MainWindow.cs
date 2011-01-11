@@ -27,7 +27,11 @@ public partial class MainWindow
 
 	private global::Gtk.Button btnQueueSong;
 
-	private global::Gtk.Button btnPlay;
+	private global::Gtk.Button btnSearch;
+
+	private global::Gtk.Entry tbSearch;
+
+	private global::Gtk.Label label1;
 
 	protected virtual void Build ()
 	{
@@ -146,15 +150,33 @@ public partial class MainWindow
 		w11.X = 280;
 		w11.Y = 425;
 		// Container child frMain.Gtk.Fixed+FixedChild
-		this.btnPlay = new global::Gtk.Button ();
-		this.btnPlay.CanFocus = true;
-		this.btnPlay.Name = "btnPlay";
-		this.btnPlay.UseUnderline = true;
-		this.btnPlay.Label = global::Mono.Unix.Catalog.GetString ("Play");
-		this.frMain.Add (this.btnPlay);
-		global::Gtk.Fixed.FixedChild w12 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.btnPlay]));
+		this.btnSearch = new global::Gtk.Button ();
+		this.btnSearch.CanFocus = true;
+		this.btnSearch.Name = "btnSearch";
+		this.btnSearch.UseUnderline = true;
+		this.btnSearch.Label = global::Mono.Unix.Catalog.GetString ("Search");
+		this.frMain.Add (this.btnSearch);
+		global::Gtk.Fixed.FixedChild w12 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.btnSearch]));
 		w12.X = 323;
 		w12.Y = 247;
+		// Container child frMain.Gtk.Fixed+FixedChild
+		this.tbSearch = new global::Gtk.Entry ();
+		this.tbSearch.CanFocus = true;
+		this.tbSearch.Name = "tbSearch";
+		this.tbSearch.IsEditable = true;
+		this.tbSearch.InvisibleChar = '•';
+		this.frMain.Add (this.tbSearch);
+		global::Gtk.Fixed.FixedChild w13 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.tbSearch]));
+		w13.X = 315;
+		w13.Y = 213;
+		// Container child frMain.Gtk.Fixed+FixedChild
+		this.label1 = new global::Gtk.Label ();
+		this.label1.Name = "label1";
+		this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("Search");
+		this.frMain.Add (this.label1);
+		global::Gtk.Fixed.FixedChild w14 = ((global::Gtk.Fixed.FixedChild)(this.frMain[this.label1]));
+		w14.X = 318;
+		w14.Y = 179;
 		this.Add (this.frMain);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -165,5 +187,6 @@ public partial class MainWindow
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.btnLogin2.Clicked += new global::System.EventHandler (this.OnBtnLogin2Clicked);
 		this.btnQueueSong.Clicked += new global::System.EventHandler (this.OnBtnQueueSongClicked);
+		this.btnSearch.Clicked += new global::System.EventHandler (this.OnBtnSearchClicked);
 	}
 }

@@ -173,8 +173,7 @@ public partial class MainWindow : Gtk.Window
 				
 				Dictionary<string, string> songId = new Dictionary<string, string>();
 				songId.Add("id", theItem.id);
-				string streamURL = Subsonic.BuildRequestURL("download.view", songId);
-				streamURL += "&u=" + Subsonic.username + "&p=enc:" + Subsonic.encPass;
+				string streamURL = Subsonic.BuildDirectURL("download.view", songId);
 				
 				System.Diagnostics.Process proc = new System.Diagnostics.Process();
 				proc.StartInfo.FileName = "vlc";
@@ -184,6 +183,17 @@ public partial class MainWindow : Gtk.Window
 			
 		}
 	}
+	
+	protected virtual void OnBtnSearchClicked (object sender, System.EventArgs e)
+	{
+		string search = tbSearch.Text;
+		
+		List<SubsonicItem> results = Subsonic.Search(search);
+		
+		foreach (SubsonicItem si in results)
+			slPlaylist.Items.Add(si);
+	}
+	
 	
 	
 	

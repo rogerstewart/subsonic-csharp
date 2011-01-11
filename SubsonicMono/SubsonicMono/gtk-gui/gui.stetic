@@ -174,16 +174,39 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Button" id="btnPlay">
+          <widget class="Gtk.Button" id="btnSearch">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="Type">TextOnly</property>
-            <property name="Label" translatable="yes">Play</property>
+            <property name="Label" translatable="yes">Search</property>
             <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBtnSearchClicked" />
           </widget>
           <packing>
             <property name="X">323</property>
             <property name="Y">247</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Entry" id="tbSearch">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">•</property>
+          </widget>
+          <packing>
+            <property name="X">315</property>
+            <property name="Y">213</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label1">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Search</property>
+          </widget>
+          <packing>
+            <property name="X">318</property>
+            <property name="Y">179</property>
           </packing>
         </child>
       </widget>
